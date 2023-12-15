@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slim Opera-Style Tabs with Slim Side Nav</title>
+    <style>
+
+        #logo {
+            width: 100px; /* Adjust the width of the logo */
+            height: auto; /* Maintain aspect ratio */
+            margin-bottom: 20px; /* Add margin to the bottom */
+        }
+
+         #search-container {
+            margin-top: 20px;
+            text-align: center; /* Center the content */
+        }
+
+        #search-input {
+            padding: 10px;
+            width: 400px;
+            border: none;
+            border-bottom: 2px solid #ccc;
+            outline: none;
+            font-size: 16px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            display: inline-block; /* Align the input inline */
+        }
+
+        #search-input:focus {
+            border-color: #2196F3;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .side-nav {
+            width: 60px; /* Adjust the width as needed */
+            background-color: #2d2d2d;
+            color: white;
+            padding-top: 20px;
+            position: fixed;
+            height: 100%;
+            overflow: hidden;
+            transition: width 0.5s;
+            z-index: 2;
+        }
+
+        .side-nav a {
+            padding: 10px; /* Adjust the padding as needed */
+            text-decoration: none;
+            font-size: 14px; /* Adjust the font size as needed */
+            color: white;
+            display: block;
+            transition: background-color 0.3s;
+        }
+
+        .side-nav a:hover {
+            background-color: #444;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+            width: 80%; /* Adjust the width as needed */
+            margin-left: 60px; /* Adjust the margin as needed */
+        }
+
+        .tab-container {
+            display: flex;
+            background-color: #f8f8f8;
+            border-bottom: 1px solid #ccc;
+            overflow-x: auto;
+            justify-content: flex-end; /* Move tabs to the right */
+            z-index: 1;
+        }
+
+        .tab {
+            padding: 5px; /* Adjust the padding as needed */
+            margin-right: 5px; /* Adjust the margin as needed */
+            cursor: pointer;
+            border: none;
+            background-color: transparent;
+            font-size: 12px; /* Adjust the font size as needed */
+            color: #555;
+            transition: background-color 0.3s;
+        }
+
+        .tab:hover {
+            background-color: #ddd;
+        }
+
+        .tab.active {
+            background-color: #3498db; /* Change the background color as needed */
+            color: white; /* Change the text color as needed */
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+            width: 100%; /* Adjust the width as needed */
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            height: calc(100vh - 40px);
+            overflow: auto;
+            margin-left: 0px; /* Adjust the margin as needed */
+            z-index: 1;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .new-tab {
+            background-color: #3498db;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .side-nav {
+                width: 40px; /* Adjust the width as needed */
+            }
+
+            .content {
+                padding: 20px;
+                margin-left: 40px; /* Adjust the margin as needed */
+            }
+
+            body.side-nav-open {
+                margin-left: 60px; /* Adjust the margin as needed */
+            }
+
+            .tab {
+                padding: 5px; /* Adjust the padding as needed */
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="side-nav" id="sideNav">
+    <a href="#">H</a>
+    <a href="#">A</a>
+    <a href="#">S</a>
+    <a href="#">C</a>
+</div>
+
+<div class="content">
+    <div class="tab-container">
+        <button class="tab active" onclick="openTab('tab1')">Speed Dial</button>
+        <button class="tab new-tab" onclick="openNewTab()">+</button>
+    </div>
+
+    <div id="tab1" class="tab-content active">
+       <div id="content">
+           <div id="logo">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                   <circle cx="12" cy="12" r="10"></circle>
+                   <line x1="12" y1="2" x2="16" y2="12"></line>
+                   <line x1="12" y1="22" x2="8" y2="12"></line>
+                   <circle cx="12" cy="12" r="4"></circle>
+               </svg>
+           </div>
+           <div id="search-container">
+               <input type="text" id="search-input" placeholder="Search the web with Powers" onkeydown="searchOnEnter(event)">
+           </div>
+       </div>
+    </div>
+
+    <script>
+        var currentTabId = 'tab1';
+        var tabCounter = 1;
+
+        function openTab(tabId) {
+            document.getElementById(currentTabId).classList.remove('active');
+            document.getElementById(tabId).classList.add('active');
+            currentTabId = tabId;
+        }
+
+        function openNewTab() {
+            var newTabId = 'tab' + (++tabCounter);
+
+            var newTabButton = document.createElement('button');
+            newTabButton.className = 'tab new-tab';
+            newTabButton.textContent = 'speed dial';
+            newTabButton.onclick = function() { openTab(newTabId); };
+
+            var newTabContent = document.createElement('div');
+            newTabContent.id = newTabId;
+            newTabContent.className = 'tab-content';
+            newTabContent.innerHTML = '<div id="content"><div id="logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="2" x2="16" y2="12"></line><line x1="12" y1="22" x2="8" y2="12"></line><circle cx="12" cy="12" r="4"></circle></svg></div><div id="search-container"><input type="text" id="search-input" placeholder="Search the web with Powers" onkeydown="searchOnEnter(event)"></div></div>';
+
+            document.querySelector('.tab-container').appendChild(newTabButton);
+            document.querySelector('.content').appendChild(newTabContent);
+
+            openTab(newTabId);
+        }
+
+        function toggleSideNav() {
+            document.body.classList.toggle('side-nav-open');
+        }
+
+       function searchOnEnter(event) {
+        if (event.key === "Enter") {
+            var url = document.getElementById("search-input").value;
+
+            // Create a new tab and open the URL
+            openNewTab();
+            var activeTabContent = document.querySelector('.tab-content.active');
+            activeTabContent.innerHTML = `<iframe src="${url}" style="width: 100%; height: 100%; border: none;"></iframe>`;
+        }
+    }
+    </script>
+</body>
+</html>
